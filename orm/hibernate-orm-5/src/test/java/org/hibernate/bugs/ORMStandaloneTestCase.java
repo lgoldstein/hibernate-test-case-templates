@@ -12,8 +12,11 @@ import org.junit.Test;
  * acceptable as a reproducer, usage of ORMUnitTestCase is preferred!
  */
 public class ORMStandaloneTestCase {
+    private SessionFactory sf;
 
-	private SessionFactory sf;
+	public ORMStandaloneTestCase() {
+        super();
+    }
 
 	@Before
 	public void setup() {

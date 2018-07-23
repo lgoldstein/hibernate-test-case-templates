@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,18 +23,18 @@ import javax.persistence.TemporalType;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "DISCRIMINATOR", discriminatorType = DiscriminatorType.STRING)
 @Access(AccessType.PROPERTY)
-public abstract class DataSourceResource extends JPAAccessibleResource {
+@EntityListeners(EntityTimestampsTrackingListener.class)
+public abstract class DataSourceResource extends JPAAccessibleResource implements MutableCreationDate {
     private static final long serialVersionUID = 3869553374672216514L;
 
     public static final String TABLE_NAME = "DATA_SOURCE_RESOURCES";
 
+    private Long id;
+    private Date createdDate;
+
     protected DataSourceResource() {
         super();
     }
-
-
-    private Long id;
-    private Date createdDate = new Date();
 
     @Id
     @Column(unique = true, nullable = false)
@@ -46,12 +47,14 @@ public abstract class DataSourceResource extends JPAAccessibleResource {
         this.id = id;
     }
 
+    @Override
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     public Date getCreatedDate() {
         return createdDate;
     }
 
+    @Override
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }

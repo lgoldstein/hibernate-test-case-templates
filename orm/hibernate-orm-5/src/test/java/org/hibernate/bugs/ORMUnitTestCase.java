@@ -32,8 +32,11 @@ import org.junit.Test;
  * submit it as a PR!
  */
 public class ORMUnitTestCase extends BaseCoreFunctionalTestCase {
+	public ORMUnitTestCase() {
+        super();
+    }
 
-	// Add your entities here.
+    // Add your entities here.
 	@Override
 	protected Class[] getAnnotatedClasses() {
 		return new Class[] {
@@ -50,6 +53,7 @@ public class ORMUnitTestCase extends BaseCoreFunctionalTestCase {
 //				"Bar.hbm.xml"
 		};
 	}
+
 	// If those mappings reside somewhere other than resources/org/hibernate/test, change this.
 	@Override
 	protected String getBaseForMappings() {

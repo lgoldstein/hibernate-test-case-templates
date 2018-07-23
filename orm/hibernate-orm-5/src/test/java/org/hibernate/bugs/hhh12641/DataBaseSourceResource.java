@@ -19,7 +19,10 @@ public class DataBaseSourceResource extends DataSourceResource {
     public static final String TABLE_NAME = "DATA_BASE_SETTINGS";
 
     private String dbName;
+    private String dbType;
+    private String maintenanceDb;
     private String query;
+    private String tableName;
 
     public DataBaseSourceResource() {
         super();
@@ -34,7 +37,7 @@ public class DataBaseSourceResource extends DataSourceResource {
         this.dbName = dbName;
     }
 
-    @Column(nullable = false)
+    @Column
     public String getQuery() {
         return query;
     }
@@ -43,10 +46,38 @@ public class DataBaseSourceResource extends DataSourceResource {
         this.query = query;
     }
 
+    @Column(nullable = false, length = 50)
+    public String getDbType() {
+        return dbType;
+    }
+
+    public void setDbType(String dbType) {
+        this.dbType = dbType;
+    }
+
+    @Column
+    public String getMaintenanceDb() {
+        return maintenanceDb;
+    }
+
+    public void setMaintenanceDb(String maintenanceDb) {
+        this.maintenanceDb = maintenanceDb;
+    }
+
+    @Column
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
     @Override
     public String toString() {
         return super.toString()
             + "[dbName=" + getDbName()
+            + ", tableName=" + getTableName()
             + ", query=" + getQuery()
             + "]";
     }

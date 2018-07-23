@@ -9,10 +9,12 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.hibernate.bugs.hhh12641.AccessibleResourcePojo;
+import org.hibernate.bugs.hhh12641.CsvDataSourceResource;
 import org.hibernate.bugs.hhh12641.DataBaseSourceResource;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -38,6 +40,7 @@ public class JPAUnitTestCase extends Assert {
 	// Entities are auto-discovered, so just add them anywhere on class-path
 	// Add your tests, using standard JUnit.
 	@Test
+	@Ignore("TBD")
 	public void hhh12641SeparateTransactionsTest() throws Exception {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		try {
@@ -50,16 +53,32 @@ public class JPAUnitTestCase extends Assert {
 	}
 
     @Test
-    public void hhh12641SingleTransactionsest() throws Exception {
+    public void hhh12641SingleTransactionsTest() throws Exception {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             doInTransaction(entityManager, JPAUnitTestCase::createAndFindDBResource);
+//            doInTransaction(entityManager, JPAUnitTestCase::createAndFindCsvResource);
         } finally {
             entityManager.close();
         }
     }
 
-    private static DataBaseSourceResource createAndFindDBResource(EntityManager entityManager) {
+    public static CsvDataSourceResource createAndFindCsvResource(EntityManager entityManager) {
+        CsvDataSourceResource r1 = createCsvDataSourceResource(entityManager);
+        Long id = r1.getId();
+        CsvDataSourceResource r2 = entityManager.find(CsvDataSourceResource.class, id);
+        assertNotNull("Cannot find persistence instance", r2);
+        return r2;
+
+    }
+
+    private static CsvDataSourceResource createCsvDataSourceResource(EntityManager entityManager) {
+        CsvDataSourceResource r = initializeAccessibleResourcePojo(new CsvDataSourceResource());
+        entityManager.persist(r);
+        return r;
+    }
+
+    public static DataBaseSourceResource createAndFindDBResource(EntityManager entityManager) {
         DataBaseSourceResource r1 = createDataBaseSourceResource(entityManager);
         Long id = r1.getId();
         DataBaseSourceResource r2 = entityManager.find(DataBaseSourceResource.class, id);
@@ -70,6 +89,7 @@ public class JPAUnitTestCase extends Assert {
 	private static DataBaseSourceResource createDataBaseSourceResource(EntityManager entityManager) {
 	    DataBaseSourceResource r = initializeAccessibleResourcePojo(new DataBaseSourceResource());
 	    r.setDbName("DB-" + new Date());
+	    r.setDbType("MSSQL");
 	    r.setQuery("SELECT COUNT(*) FROM " + r.getDbName());
 	    entityManager.persist(r);
 	    return r;

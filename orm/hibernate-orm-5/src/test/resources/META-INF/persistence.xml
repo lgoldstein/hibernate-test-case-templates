@@ -14,16 +14,31 @@
         <properties>
             <property name="hibernate.archive.autodetection" value="class, hbm"/>
 
+                <!-- H2 setup -->
+            <!--
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
             <property name="hibernate.connection.url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1"/>
             <property name="hibernate.connection.username" value="sa"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            -->
+
+                <!-- PostgreSQL setup -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/c_application_rweb?binaryTransferDisable=TIMESTAMP"/>
+            <property name="hibernate.connection.username" value="c_application_rweb"/>
+            <property name="hibernate.connection.password" value="c_application_rweb"/>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+
+            <!-- See https://stackoverflow.com/questions/32437202/improvednamingstrategy-no-longer-working-in-hibernate-5 -->
+            <property name="hibernate.physical_naming_strategy"
+                    value="org.hibernate.bugs.hhh12641.ImprovedPhysicalNamingStrategyImpl" />
 
             <property name="hibernate.connection.pool_size" value="5"/>
 
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
 
             <property name="hibernate.max_fetch_depth" value="5"/>
 
